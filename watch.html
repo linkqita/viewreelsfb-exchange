@@ -1,28 +1,9 @@
-<!doctype html>
-<html>
-<head>
-<meta charset="utf-8">
-<title>Tonton Reels</title>
-<style>
-body{margin:0;background:#0f172a;font-family:Arial;color:white;display:flex;justify-content:center;align-items:center;height:100vh}
-.box{background:#020617;padding:25px;border-radius:14px;width:360px;text-align:center}
-iframe{border-radius:12px}
-.btn{display:block;background:#38BFB3;color:#022c22;text-decoration:none;padding:12px;border-radius:8px;margin-top:12px;font-weight:bold}
-</style>
-</head>
-<body>
-
-<div class="box">
-<h2>Reels Member</h2>
-<iframe id="player" width="100%" height="220" allowfullscreen></iframe>
-<a class="btn" href="submit.html">KIRIM REELS SAYA</a>
-</div>
-
 <script>
-if(!localStorage.getItem("access_token")){
- location.href="index.html";
-}
+const params = new URLSearchParams(location.search);
+const token = params.get("token");
+if(!token){ location.href="index.html"; }
 
+// ambil antrian reels
 const reels = JSON.parse(localStorage.getItem("reels")||"[]");
 
 if(reels.length>0){
@@ -32,7 +13,9 @@ if(reels.length>0){
 }else{
  alert("Belum ada reels. Jadilah yang pertama!");
 }
-</script>
 
-</body>
-</html>
+// kirim token ke submit
+document.getElementById("goSubmit").onclick = ()=>{
+ location.href = "submit.html?token="+token;
+};
+</script>
