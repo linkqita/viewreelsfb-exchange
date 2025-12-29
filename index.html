@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Validasi Akses</title>
+<style>
+body{margin:0;background:#0f172a;font-family:Arial;color:white;display:flex;justify-content:center;align-items:center;height:100vh}
+.box{background:#020617;padding:25px;border-radius:14px;width:360px;text-align:center}
+.btn{display:block;background:#38BFB3;color:#022c22;text-decoration:none;padding:12px;border-radius:8px;margin-top:10px;font-weight:bold}
+</style>
+</head>
+<body>
+
+<div class="box">
+<h2>Validasi Akses</h2>
+<p>Klik tombol di bawah untuk membuka akses.</p>
+
+<a class="btn" href="https://LINK_AFFILIATE_KAMU" target="_blank" onclick="validate()">VALIDASI SEKARANG</a>
+</div>
+
+<script>
+function validate(){
+ localStorage.setItem("validated","yes");
+ setTimeout(()=>location.href="watch.html",1000);
+}
+</script>
+
+</body>
+</html>
