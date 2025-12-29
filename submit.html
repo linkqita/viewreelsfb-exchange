@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Kirim</title>
+<title>Kirim Reels</title>
 <style>
 body{margin:0;background:#0f172a;color:white;font-family:Arial;display:flex;justify-content:center;align-items:center;height:100vh}
 .box{background:#020617;padding:25px;border-radius:14px;width:360px;text-align:center}
@@ -11,13 +11,15 @@ input{width:100%;padding:12px;border-radius:8px;border:0;margin-top:10px}
 </style>
 </head>
 <body>
+
 <div class="box">
 <h2>Kirim Reels</h2>
 <input id="link" placeholder="Tempel link Reels FB">
 <div class="btn" onclick="submit()">KIRIM</div>
 </div>
+
 <script>
-const token=new URLSearchParams(location.search).get("token");
+const token = sessionStorage.getItem("token");
 if(!token) location.href="index.html";
 
 function normalize(u){
@@ -34,11 +36,15 @@ function normalize(u){
 function submit(){
  const raw=link.value.trim();
  if(!raw.includes("facebook")){alert("Link salah");return;}
- const reels=JSON.parse(localStorage.getItem("reels")||"[]");
+
+ const reels = JSON.parse(localStorage.getItem("reels")||"[]");
  reels.push(normalize(raw));
  localStorage.setItem("reels",JSON.stringify(reels));
- location.href="index.html";   // token habis → wajib validasi lagi
+
+ sessionStorage.removeItem("token"); // habiskan token → wajib validasi lagi
+ location.href="index.html";
 }
 </script>
+
 </body>
 </html>
