@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Kirim Reels</title>
+<style>
+body{margin:0;background:#0f172a;font-family:Arial;color:white;display:flex;justify-content:center;align-items:center;height:100vh}
+.box{background:#020617;padding:25px;border-radius:14px;width:360px;text-align:center}
+input{width:100%;padding:12px;border-radius:8px;border:0;margin-top:10px}
+.btn{display:block;background:#38BFB3;color:#022c22;text-decoration:none;padding:12px;border-radius:8px;margin-top:12px;font-weight:bold}
+</style>
+</head>
+<body>
+
+<div class="box">
+<h2>Kirim Reels Kamu</h2>
+<input id="link" placeholder="Tempel link Reels Facebook">
+<button class="btn" onclick="submitReels()">KIRIM</button>
+</div>
+
+<script>
+if(localStorage.getItem("validated")!=="yes"){
+ location.href="index.html";
+}
+
+function submitReels(){
+ const link=document.getElementById("link").value.trim();
+ if(!link.includes("facebook.com")){ alert("Link tidak valid"); return; }
+ const reels=JSON.parse(localStorage.getItem("reels")||"[]");
+ reels.push(link);
+ localStorage.setItem("reels",JSON.stringify(reels));
+ alert("Reels kamu masuk antrian!");
+ location.href="watch.html";
+}
+</script>
+
+</body>
+</html>
