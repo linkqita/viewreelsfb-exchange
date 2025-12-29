@@ -6,7 +6,6 @@
 <style>
 body{margin:0;background:#0f172a;color:white;font-family:Arial;display:flex;justify-content:center;align-items:center;height:100vh}
 .box{background:#020617;padding:25px;border-radius:14px;width:360px;text-align:center}
-.embed{border-radius:12px;overflow:hidden}
 .btn{background:#38BFB3;color:#022c22;padding:12px;border-radius:8px;display:block;margin-top:12px;font-weight:bold}
 .small{font-size:12px;color:#94a3b8;margin-top:10px}
 </style>
@@ -15,60 +14,47 @@ body{margin:0;background:#0f172a;color:white;font-family:Arial;display:flex;just
 
 <div class="box">
 <h2>Reels Member</h2>
+<div class="small">Video akan dibuka di tab Facebook baru.<br>Tonton minimal <b>30 detik</b>.</div>
 
-<div id="fb-root"></div>
-<div class="embed">
-  <div class="fb-video"
-       id="fbvid"
-       data-width="320"
-       data-show-text="false"
-       data-allowfullscreen="true">
-  </div>
-</div>
-
-<div class="small">Tonton minimal <b>30 detik</b> sebelum lanjut.</div>
+<div class="btn" id="openBtn">BUKA VIDEO</div>
 <div class="btn" id="goSubmit">KIRIM REELS SAYA</div>
 </div>
-
-<script async defer crossorigin="anonymous"
- src="https://connect.facebook.net/id_ID/sdk.js#xfbml=1&version=v19.0"></script>
 
 <script>
 const token = sessionStorage.getItem("token");
 if(!token) location.href="index.html";
 
-// ambil data
 const reels = JSON.parse(localStorage.getItem("reels")||"[]");
+if(!reels.length){ alert("Belum ada reels."); }
 
-if(reels.length){
-  const r = reels[Math.floor(Math.random()*reels.length)]
-              .replace("m.facebook.com","www.facebook.com"); // WAJIB desktop canonical
-  document.getElementById("fbvid").setAttribute("data-href", r);
+let opened = false;
+let allowed = false;
 
-  // paksa render ulang SDK
-  setTimeout(()=>{
-    if(window.FB) FB.XFBML.parse();
-  },1500);
-}else{
-  alert("Belum ada reels.");
-}
+openBtn.onclick = ()=>{
+ const r = reels[Math.floor(Math.random()*reels.length)];
+ window.open(r,"_blank");      // BUKA DI FACEBOOK ASLI
+ opened = true;
 
-// timer 30 detik
-const btn = document.getElementById("goSubmit");
-btn.style.opacity=0.4;
-btn.style.pointerEvents="none";
+ // countdown 30 detik
+ setTimeout(()=>{
+  allowed = true;
+ },30000);
+};
 
-let t = 30;
-const iv = setInterval(()=>{
-  t--;
-  if(t<=0){
-    clearInterval(iv);
-    btn.style.opacity=1;
-    btn.style.pointerEvents="auto";
-  }
+goSubmit.style.opacity=0.4;
+goSubmit.style.pointerEvents="none";
+
+setInterval(()=>{
+ if(opened && allowed){
+   goSubmit.style.opacity=1;
+   goSubmit.style.pointerEvents="auto";
+ }
 },1000);
 
-btn.onclick = ()=> location.href="submit.html";
+goSubmit.onclick = ()=>{
+ if(!allowed) return alert("Tonton dulu 30 detik");
+ location.href="submit.html";
+};
 </script>
 
 </body>
