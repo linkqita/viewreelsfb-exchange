@@ -20,13 +20,11 @@ body{margin:0;background:#0f172a;font-family:Arial;color:white;display:flex;just
 
 <script>
 function validate(){
- localStorage.setItem("access_token", Date.now());
-
- // beri waktu mobile browser menyimpan token dulu
- setTimeout(()=>{
-   location.href="watch.html";
- },1200);
-
- return false; // cegah redirect ganda mobile
+ const t = Date.now();
+ location.href = "watch.html?token="+t;
+ return false;
+}
+</script>
+e; // cegah redirect ganda mobile
 }
 </script>
