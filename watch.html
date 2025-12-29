@@ -30,19 +30,19 @@ if(!token) location.href="index.html";
 const reels = JSON.parse(localStorage.getItem("reels")||"[]");
 
 if(reels.length){
- const r = reels[Math.floor(Math.random()*reels.length)]
-           .replace("m.facebook.com","www.facebook.com");
- player.src = "https://www.facebook.com/plugins/video.php?href="+encodeURIComponent(r)+"&show_text=false&width=320";
+  const r = reels[Math.floor(Math.random()*reels.length)]
+            .replace("m.facebook.com","www.facebook.com");
+  player.src = "https://www.facebook.com/plugins/video.php?href="+encodeURIComponent(r)+"&show_text=false&width=320";
 }else{
- alert("Belum ada reels.");
+  alert("Belum ada reels.");
 }
 
 // timer 30 detik
 goSubmit.style.opacity=0.4;
 goSubmit.style.pointerEvents="none";
 setTimeout(()=>{
- goSubmit.style.opacity=1;
- goSubmit.style.pointerEvents="auto";
+  goSubmit.style.opacity=1;
+  goSubmit.style.pointerEvents="auto";
 },30000);
 
 goSubmit.onclick = ()=> location.href="submit.html";
