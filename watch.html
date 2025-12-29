@@ -15,15 +15,17 @@ body{margin:0;background:#0f172a;color:white;font-family:Arial;display:flex;just
 
 <div class="box">
 <h2>Reels Member</h2>
+
+<div id="fb-root"></div>
 <div class="embed">
-  <div id="fb-root"></div>
   <div class="fb-video"
        id="fbvid"
-       data-allowfullscreen="true"
        data-width="320"
-       data-show-text="false">
+       data-show-text="false"
+       data-allowfullscreen="true">
   </div>
 </div>
+
 <div class="small">Tonton minimal <b>30 detik</b> sebelum lanjut.</div>
 <div class="btn" id="goSubmit">KIRIM REELS SAYA</div>
 </div>
@@ -35,27 +37,35 @@ body{margin:0;background:#0f172a;color:white;font-family:Arial;display:flex;just
 const token = sessionStorage.getItem("token");
 if(!token) location.href="index.html";
 
+// ambil data
 const reels = JSON.parse(localStorage.getItem("reels")||"[]");
 
 if(reels.length){
- const r = reels[Math.floor(Math.random()*reels.length)];
- document.getElementById("fbvid").setAttribute("data-href", r);
+  const r = reels[Math.floor(Math.random()*reels.length)]
+              .replace("m.facebook.com","www.facebook.com"); // WAJIB desktop canonical
+  document.getElementById("fbvid").setAttribute("data-href", r);
+
+  // paksa render ulang SDK
+  setTimeout(()=>{
+    if(window.FB) FB.XFBML.parse();
+  },1500);
 }else{
- alert("Belum ada reels.");
+  alert("Belum ada reels.");
 }
 
-// kunci tombol 30 detik
+// timer 30 detik
 const btn = document.getElementById("goSubmit");
-btn.style.opacity=0.5;
+btn.style.opacity=0.4;
 btn.style.pointerEvents="none";
-let t=30;
-const lock = setInterval(()=>{
- t--;
- if(t<=0){
-  clearInterval(lock);
-  btn.style.opacity=1;
-  btn.style.pointerEvents="auto";
- }
+
+let t = 30;
+const iv = setInterval(()=>{
+  t--;
+  if(t<=0){
+    clearInterval(iv);
+    btn.style.opacity=1;
+    btn.style.pointerEvents="auto";
+  }
 },1000);
 
 btn.onclick = ()=> location.href="submit.html";
