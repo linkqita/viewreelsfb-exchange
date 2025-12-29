@@ -23,16 +23,43 @@ if(localStorage.getItem("validated")!=="yes"){
  location.href="index.html";
 }
 
+function normalizeReel(url){
+ try{
+  const u = new URL(url);
+
+  // fb.watch/xxxxx
+  if(u.hostname.includes("fb.watch")){
+    return "https://www.facebook.com/watch/?v=" + u.pathname.replace("/","");
+  }
+
+  // facebook.com/share/v/xxxx
+  if(u.pathname.includes("/share/")){
+    const id = u.pathname.split("/").pop();
+    return "https://www.facebook.com/watch/?v=" + id;
+  }
+
+  // facebook.com/reel/xxxx
+  if(u.pathname.includes("/reel/")){
+    return "https://www.facebook.com" + u.pathname;
+  }
+
+  return url;
+ }catch(e){
+  return url;
+ }
+}
+
 function submitReels(){
- const link=document.getElementById("link").value.trim();
- if(!link.includes("facebook.com")){ alert("Link tidak valid"); return; }
- const reels=JSON.parse(localStorage.getItem("reels")||"[]");
- reels.push(link);
+ const raw = document.getElementById("link").value.trim();
+ if(!raw.includes("facebook")){ alert("Link tidak valid"); return; }
+
+ const clean = normalizeReel(raw);
+
+ const reels = JSON.parse(localStorage.getItem("reels")||"[]");
+ reels.push(clean);
  localStorage.setItem("reels",JSON.stringify(reels));
- alert("Reels kamu masuk antrian!");
+
+ alert("Reels kamu siap diputar!");
  location.href="watch.html";
 }
 </script>
-
-</body>
-</html>
