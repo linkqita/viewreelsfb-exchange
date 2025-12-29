@@ -22,6 +22,7 @@ input{width:100%;padding:12px;border-radius:8px;border:0;margin-top:10px}
 const token = sessionStorage.getItem("token");
 if(!token) location.href="index.html";
 
+// ===== NORMALIZER =====
 function normalize(u){
  try{
   const x=new URL(u);
@@ -33,15 +34,30 @@ function normalize(u){
  }catch(e){ return u; }
 }
 
-function submit(){
- const raw=link.value.trim();
+// ===== SANITIZER (ambil ID reel asli) =====
+async function sanitizeReel(raw){
+ if(!raw.includes("/share/")) return raw;
+ try{
+  const res = await fetch("https://r.jina.ai/"+raw);
+  const html = await res.text();
+  const id = html.match(/"video_id":"(\d+)"/);
+  if(id) return "https://www.facebook.com/reel/"+id[1];
+ }catch(e){}
+ return raw;
+}
+
+// ===== SUBMIT =====
+async function submit(){
+ const raw = link.value.trim();
  if(!raw.includes("facebook")){alert("Link salah");return;}
 
+ const clean = await sanitizeReel(normalize(raw));
+
  const reels = JSON.parse(localStorage.getItem("reels")||"[]");
- reels.push(normalize(raw));
+ reels.push(clean);
  localStorage.setItem("reels",JSON.stringify(reels));
 
- sessionStorage.removeItem("token"); // habiskan token → wajib validasi lagi
+ sessionStorage.removeItem("token"); // token habis → wajib validasi lagi
  location.href="index.html";
 }
 </script>
