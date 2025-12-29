@@ -8,13 +8,15 @@ body{margin:0;background:#0f172a;color:white;font-family:Arial;display:flex;just
 .box{background:#020617;padding:25px;border-radius:14px;width:360px;text-align:center}
 iframe{border-radius:12px}
 .btn{background:#38BFB3;color:#022c22;padding:12px;border-radius:8px;display:block;margin-top:12px;font-weight:bold}
+.small{font-size:12px;color:#94a3b8;margin-top:10px}
 </style>
 </head>
 <body>
 
 <div class="box">
 <h2>Reels Member</h2>
-<iframe id="player" width="100%" height="220" allowfullscreen></iframe>
+<iframe id="player" width="100%" height="240" allowfullscreen></iframe>
+<div class="small">Tonton minimal 5 detik sebelum lanjut.</div>
 <div class="btn" id="goSubmit">KIRIM REELS SAYA</div>
 </div>
 
@@ -22,17 +24,24 @@ iframe{border-radius:12px}
 const token = sessionStorage.getItem("token");
 if(!token) location.href="index.html";
 
-// ambil antrian
 const reels = JSON.parse(localStorage.getItem("reels")||"[]");
 
 if(reels.length){
  const r = reels[Math.floor(Math.random()*reels.length)];
- player.src="https://www.facebook.com/plugins/video.php?href="+encodeURIComponent(r);
+ // embed mobile reels (paling stabil)
+ player.src = r + "?ref=embed";
 }else{
  alert("Belum ada reels.");
 }
 
-// lanjut submit
+// wajib nonton 5 detik
+goSubmit.style.opacity=0.5;
+goSubmit.style.pointerEvents="none";
+setTimeout(()=>{
+ goSubmit.style.opacity=1;
+ goSubmit.style.pointerEvents="auto";
+},5000);
+
 goSubmit.onclick = ()=> location.href="submit.html";
 </script>
 
