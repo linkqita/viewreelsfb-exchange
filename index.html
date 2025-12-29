@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html lang="id">
 <head>
 <meta charset="utf-8">
 <title>Validasi Akses</title>
@@ -15,16 +15,16 @@ body{margin:0;background:#0f172a;font-family:Arial;color:white;display:flex;just
 <h2>Validasi Akses</h2>
 <p>Klik tombol di bawah untuk membuka akses.</p>
 
-<a class="btn" href="https://s.shopee.co.id/1BFakhu09c" target="_blank" onclick="return validate()">VALIDASI SEKARANG</a>
+<a class="btn" href="https://s.shopee.co.id/1BFakhu09c" target="_blank" onclick="return go()">VALIDASI SEKARANG</a>
 </div>
 
 <script>
-function validate(){
- const t = Date.now();
- location.href = "watch.html?token="+t;
+function go(){
+ const token = Date.now();
+ location.href = "watch.html?token="+token;
  return false;
 }
 </script>
-e; // cegah redirect ganda mobile
-}
-</script>
+
+</body>
+</html>
