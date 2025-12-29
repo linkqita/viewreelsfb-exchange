@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html lang="id">
 <head>
 <meta charset="utf-8">
 <title>Validasi</title>
@@ -10,16 +10,22 @@ body{margin:0;background:#0f172a;color:white;font-family:Arial;display:flex;just
 </style>
 </head>
 <body>
+
 <div class="box">
 <h2>Validasi Akses</h2>
-<p>Klik untuk buka akses.</p>
+<p>Klik tombol di bawah untuk membuka akses.</p>
+
 <a class="btn" href="https://s.shopee.co.id/1BFakhu09c" target="_blank" onclick="return go()">VALIDASI SEKARANG</a>
 </div>
+
 <script>
 function go(){
- location.href="watch.html?token="+Date.now();
- return false;
+ const token = Date.now();
+ sessionStorage.setItem("token", token);
+ setTimeout(()=>{ location.href="watch.html"; },1200);
+ return true;   // biarkan Shopee tetap terbuka
 }
 </script>
+
 </body>
 </html>
