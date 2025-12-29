@@ -60,6 +60,7 @@ function submitReels(){
  localStorage.setItem("reels",JSON.stringify(reels));
 
  alert("Reels kamu siap diputar!");
+ localStorage.removeItem("access_token");
  location.href="watch.html";
 }
 </script>
