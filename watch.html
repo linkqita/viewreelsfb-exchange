@@ -17,7 +17,7 @@ iframe{border-radius:12px}
 <div class="btn" id="goSubmit">KIRIM REELS SAYA</div>
 </div>
 <script>
-const token=new URLSearchParams(location.search).get("token");
+const token = sessionStorage.getItem("token");
 if(!token) location.href="index.html";
 
 const reels=JSON.parse(localStorage.getItem("reels")||"[]");
