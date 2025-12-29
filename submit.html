@@ -8,13 +8,18 @@ body{margin:0;background:#0f172a;color:white;font-family:Arial;display:flex;just
 .box{background:#020617;padding:25px;border-radius:14px;width:360px;text-align:center}
 input{width:100%;padding:12px;border-radius:8px;border:0;margin-top:10px}
 .btn{background:#38BFB3;color:#022c22;padding:12px;border-radius:8px;display:block;margin-top:12px;font-weight:bold}
+.small{font-size:12px;color:#94a3b8;margin-top:10px}
 </style>
 </head>
 <body>
 
 <div class="box">
 <h2>Kirim Reels</h2>
-<input id="link" placeholder="Tempel link Reels FB">
+<input id="rid" placeholder="Masukkan ID Reels (angka saja)">
+<div class="small">
+Contoh: https://m.facebook.com/reel/<b>123456789012345</b><br>
+Yang dimasukkan cukup angkanya saja.
+</div>
 <div class="btn" onclick="submit()">KIRIM</div>
 </div>
 
@@ -22,42 +27,20 @@ input{width:100%;padding:12px;border-radius:8px;border:0;margin-top:10px}
 const token = sessionStorage.getItem("token");
 if(!token) location.href="index.html";
 
-// ===== NORMALIZER =====
-function normalize(u){
- try{
-  const x=new URL(u);
-  if(x.hostname.includes("fb.watch"))
-   return "https://www.facebook.com/watch/?v="+x.pathname.replace("/","");
-  if(x.pathname.includes("/share/"))
-   return "https://www.facebook.com/watch/?v="+x.pathname.split("/").pop();
-  return u;
- }catch(e){ return u; }
-}
+function submit(){
+ const id = rid.value.replace(/\D/g,'');
+ if(id.length < 8){
+   alert("Masukkan ID Reels yang benar");
+   return;
+ }
 
-// ===== SANITIZER (ambil ID reel asli) =====
-async function sanitizeReel(raw){
- if(!raw.includes("/share/")) return raw;
- try{
-  const res = await fetch("https://r.jina.ai/"+raw);
-  const html = await res.text();
-  const id = html.match(/"video_id":"(\d+)"/);
-  if(id) return "https://www.facebook.com/reel/"+id[1];
- }catch(e){}
- return raw;
-}
-
-// ===== SUBMIT =====
-async function submit(){
- const raw = link.value.trim();
- if(!raw.includes("facebook")){alert("Link salah");return;}
-
- const clean = await sanitizeReel(normalize(raw));
+ const link = "https://m.facebook.com/reel/"+id+"/";
 
  const reels = JSON.parse(localStorage.getItem("reels")||"[]");
- reels.push(clean);
+ reels.push(link);
  localStorage.setItem("reels",JSON.stringify(reels));
 
- sessionStorage.removeItem("token"); // token habis → wajib validasi lagi
+ sessionStorage.removeItem("token");
  location.href="index.html";
 }
 </script>
